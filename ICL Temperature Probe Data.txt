@@ -1,0 +1,59 @@
+For ICL -  The instrument needs a command to get the temperature data. 
+
+The command        #WT.   <CR> <LF>
+
+
+The command will return the 1st temperature is probe tip temperature and is a thermocouple.  The 2nd temperature is the probe housing temperature and is a thermistor.
+
+The following is an example in docklight.
+
+2/1/2021 16:51:40.704 [RX] - #WT??.+013.4  +014.5
+:
+2/1/2021 16:51:42.701 [TX] - #WT.
+
+2/1/2021 16:51:42.705 [RX] - #W??T.+013.4  +014.5
+:
+2/1/2021 16:51:44.702 [TX] - #WT.
+
+2/1/2021 16:51:44.706 [RX] - #W??T.+013.4  +014.5
+:
+2/1/2021 16:51:46.704 [TX] - #WT.
+
+2/1/2021 16:51:46.707 [RX] - #W??T.+013.4  +014.5
+:
+2/1/2021 16:51:48.704 [TX] - #WT.
+
+2/1/2021 16:51:48.709 [RX] - #WT??.+013.2  +014.5
+
+If the communication is poor the ICL will return nothing or the ASCII characters are not read properly as the following:
+2/1/2021 17:06:21.848 [TX] - #WT.<CR><LF>
+
+2/1/2021 17:06:21.850 [RX] - #WT.<HT>    <LF>
+
+2/1/2021 17:06:23.849 [TX] - #WT.<CR><LF>
+
+2/1/2021 17:06:23.854 [RX] - ??#WT.<SOH><BS>ÿlÿûÿ???<ETX>
+2/1/2021 17:06:25.850 [TX] - #WT.<CR><LF>
+
+2/1/2021 17:06:25.853 [RX] - #W??T.<NUL><NUL>?+¢r6°ö×j?Z?
+2/1/2021 17:06:27.851 [TX] - #WT.<CR><LF>
+
+2/1/2021 17:06:27.855 [RX] - #WT??.<SOH>?<NUL>
+2/1/2021 17:06:29.852 [TX] - #WT.<CR><LF>
+
+2/1/2021 17:06:29.856 [RX] - #WT??.<HT>    ?<BS>
+2/1/2021 17:06:31.853 [TX] - #WT.<CR><LF>
+
+2/1/2021 17:06:31.856 [RX] - #WT??.<SOH>?<NUL>ÿ
+2/1/2021 17:06:33.853 [TX] - #WT.<CR><LF>
+
+2/1/2021 17:06:33.856 [RX] - #W??T.<SOH><NUL>+014.8  +014.5<CR><LF>
+:<ETX>
+2/1/2021 17:06:35.854 [TX] - #WT.<CR><LF>
+
+2/1/2021 17:06:35.857 [RX] - #W??T.<SOH><NUL>+014.8  +014.5<CR><LF>
+:<ETX>
+2/1/2021 17:06:37.855 [TX] - #WT.<CR><LF>
+
+2/1/2021 17:06:37.859 [RX] - #W??T.<SOH><NUL>+014.8  +014.5<CR><LF>
+:<ETX>
