@@ -24,8 +24,8 @@ class ICLlogger(QMainWindow):
         self.querystr.append(0x0D) # put <CR> here
         self.querystr.append(0x0A) # put <LF> here
 
-        self.simulate = True
-        self.mydl = DataLogger()
+        self.simulate = False   # Normal operation is True
+        #self.mydl = DataLogger()
         
         self.disp_systime_timer = QTimer()
         self.disp_systime_timer.timeout.connect(self.at_disp_systime_timeout)
@@ -38,6 +38,8 @@ class ICLlogger(QMainWindow):
 
         self.do_init()
 
+        self.mydl = DataLogger()
+
 #        self.new_icl-record.connect(self.on_new_icl-record)
 
     def on_query_timer_timeout(self):
@@ -47,7 +49,19 @@ class ICLlogger(QMainWindow):
         else:
             nowtime = QTime()
             msg = "#WT??.+" + str(nowtime.second()) + " +" + str(nowtime.minute()) 
+
         preamble, self.tip_temp, self.housing_temp = msg.split('+')
+
+        try:
+            test = num(self.tip_temp)
+        except ValueError:
+            self.tip_temp = "---"
+
+        try:
+            test = num(self.housing_temp)
+        except ValueError:
+            self.housing_temp = "---"
+
         self.ui.tip_temp_label.setText(self.tip_temp)
         self.ui.housing_temp_label.setText(self.housing_temp)
         self.mydl.writeRecord(self.tip_temp + "\t" + self.housing_temp)
@@ -109,7 +123,8 @@ class DataLogger(QObject):
         self.logstream << mysystimef1() << "\t" << record2log << "\n"
 
     def stop_logging(self):
-        self.logfileh.close()
+        if self.logfileh:
+            self.logfileh.close()
         
         
 def mysystimef1():
@@ -121,6 +136,12 @@ def mysystimef2():
     now = QDateTime.currentDateTime()
     systime = now.toString("yyyyMMddhhmmss")
     return systime
+
+def num(s):
+    try:
+        return int(s)
+    except ValueError as e:
+        return float(s)
 
 if __name__ == "__main__":
 
