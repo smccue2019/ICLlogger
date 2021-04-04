@@ -8,7 +8,7 @@ import sys,re, threading
 class Moxacomms(QDialog):
 
     new_icl_record = pyqtSignal(str, name = 'new_icl_record')
-    lost_moxa_comms = pyqtSignal(str, name = 'lost_moxa_comms')
+    comms_lost = pyqtSignal(str, name = 'comms_lost')
 
     def __init__(self, moxa_ip, moxa_port, parent=None):
         super(Moxacomms, self).__init__(parent)
@@ -31,9 +31,6 @@ class Moxacomms(QDialog):
         except:
             print(self.sock.SocketError())
 
-    def close_comms(self):
-        self.sock.close()
-        
     def transmit_msg(self, msg):
         out_msg = bytearray()
 
@@ -68,12 +65,12 @@ class Moxacomms(QDialog):
 
         if connect_error == QAbstractSocket.RemoteHostClosedError:
             print("ERROR: Remote host closed")
-            self.lost_moxa_comms.emit("Remote host closed")
+            self.comms_lost.emit("Remote host closed")
         elif connect_error == QAbstractSocket.HostNotFoundError:
             print("ERROR: Host was not found")
-            self.lost_moxa_comms.emit("Remote host not found")
+            self.comms_lost.emit("Remote host not found")
         elif connect_error == QAbstractSocket.ConnectionRefusedError:
             print("ERROR: The connection was refused by the peer")
-            self.lost_moxa_comms.emit("Connection refused")
+            self.comms_lost.emit("Connection refused")
         else:
             print("The following error occurred: %l" % self.sock.errorString())
