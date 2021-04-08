@@ -27,8 +27,7 @@ class ICLlogger(QMainWindow):
         #self.querystr.append(0x0A) # put <LF> here
 
         print(str(self.querystr))
-        self.simulate = False   # Normal operation is False.
-        
+
         self.disp_systime_timer = QTimer()
         self.disp_systime_timer.timeout.connect(self.at_disp_systime_timeout)
         self.disp_systime_timer.start(1000)        
@@ -40,7 +39,14 @@ class ICLlogger(QMainWindow):
         self.last_good_response_timer.timeout.connect(self.on_good_response_timeout)
 
         self.do_init()
+
+        #self.simulate = False   # Normal operation is False.
+        if self.simulate:
+            print("Simulating operation: generating fake measurements")
+        else:
+            print("Not simulating: real operation")
         
+
         self.s = Moxacomms(self.moxa_ip, self.moxa_port)
         self.s.new_icl_record.connect(self.on_new_icl_record)
         self.s.lost_moxa_comms.connect(self.on_comms_lost)
@@ -56,7 +62,7 @@ class ICLlogger(QMainWindow):
             self.query_counter += 1
             self.ui.query_count_lbl.setText(str(self.query_counter))
         else:
-            nowtime = QTime()
+            nowtime = QTime.currentTime()
             msg = "#WT??.+" + str(nowtime.second()) + " +" + str(nowtime.minute()) 
             self.on_new_icl_record(msg)
             
@@ -145,6 +151,7 @@ class ICLlogger(QMainWindow):
         incfg = configparser.ConfigParser()
         incfg.read("ICLlogger.ini")
 
+        self.simulate = incfg.get('ICL','simulate')
         self.moxa_ip = incfg.get('ICL','moxa_ip')
         #self.moxa_ip = bytes(self.moxa_ip, 'utf-8')
         self.moxa_port = int(incfg.get('ICL','moxa_port'))

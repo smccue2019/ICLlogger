@@ -16,13 +16,15 @@ class Udp_rebroadcaster(QDialog):
         print("Rebroadcasting to " + broadcast_dest + "port " + str(dest_port))
 
     def open_outsocks(self):
-        # For Jason ops destinations are the sealog host and dlog1 host
+        # For Jason ops destination is full broadcast to make available
+        # to sealog host, dlog1, and RaspPi metadata displays.
         self.sock_broadcast = QUdpSocket()
         self.sock_broadcast.bind(self.broadcast_ip, self.dest_port)
 
     def send_datagram(self, out_msg):
             
         outBA = bytearray(out_msg, 'utf-8')
+        print("Sending msg " + outBA.decode('utf-8') + " to " + self.broadcast_ip + " port " + self.dest_port)
         
         res = self.sock_broadcast.writeDatagram(outBA, self.broadcast_ip, self.dest_port)
         if res < 0:
