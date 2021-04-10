@@ -24,7 +24,7 @@ class Udp_rebroadcaster(QDialog):
     def send_datagram(self, out_msg):
             
         outBA = bytearray(out_msg, 'utf-8')
-        print("Sending msg " + outBA.decode('utf-8') + " to " + self.broadcast_ip + " port " + self.dest_port)
+        print("Sending msg " + outBA.decode('utf-8') + " to " + self.broadcast_ip.toString() + " port " + self.dest_port)
         
         res = self.sock_broadcast.writeDatagram(outBA, self.broadcast_ip, self.dest_port)
         if res < 0:
