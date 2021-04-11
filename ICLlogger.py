@@ -51,7 +51,7 @@ class ICLlogger(QMainWindow):
         self.s.new_icl_record.connect(self.on_new_icl_record)
         self.s.lost_moxa_comms.connect(self.on_comms_lost)
 
-        self.udprb = Udp_rebroadcaster(self.broadcast_dest,self.dest_port)
+        self.udprb = Udp_rebroadcaster(self.broadcast_dest,self.dest_port1,self.dest_port2)
         self.udprb.open_outsocks()
         
         self.mydl = DataLogger()
@@ -156,8 +156,15 @@ class ICLlogger(QMainWindow):
         #self.moxa_ip = bytes(self.moxa_ip, 'utf-8')
         self.moxa_port = int(incfg.get('ICL','moxa_port'))
         self.query_period = int(incfg.get('ICL','query_period'))
-        self.dest_port = int(incfg.get('UDP','dest_port'))
+        self.dest_port1 = int(incfg.get('UDP','dest_port1'))
         self.broadcast_dest = incfg.get('UDP','broadcast_dest')
+
+        self.dest_count = int(incfg.get('UDP','dest_count'))
+
+        if self.dest_count == 2:
+            self.dest_port2 = int(incfg.get('UDP','dest_port2'))
+        else:
+            self.dest_port2 = None
         
 class DataLogger(QObject):
 
