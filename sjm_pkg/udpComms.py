@@ -37,13 +37,13 @@ class Udp_rebroadcaster(QDialog):
             
         outBA = bytearray(out_msg, 'utf-8')
         
-        print("Sending msg " + outBA.decode('utf-8') + " to " + self.broadcast_ip.toString() + " port " + self.dest_port1)
+        print("Sending msg " + outBA.decode('utf-8') + " to " + self.broadcast_ip.toString() + " port " + str(self.dest_port1))
         
         res1 = self.sock_b1.writeDatagram(outBA, self.broadcast_ip, self.dest_port1)
-        if res11 < 0:
-           print("Problem broadcasting ICL datagram to " + self.dest_port1)
+        if res1 < 0:
+           print("Problem broadcasting ICL datagram to " + str(self.dest_port1))
             
         if self.dest_count == 2:
-            print("Sending msg " + outBA.decode('utf-8') + " to " + self.broadcast_ip.toString() + " port " + self.dest_port2)
+            print("Sending msg " + outBA.decode('utf-8') + " to " + self.broadcast_ip.toString() + " port " + str(self.dest_port2))
         
             res2 = self.sock_b2.writeDatagram(outBA, self.broadcast_ip, self.dest_port2)

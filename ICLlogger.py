@@ -43,9 +43,9 @@ class ICLlogger(QMainWindow):
         #self.simulate = False   # Normal operation is False.
         if self.simulate:
             print("Simulating operation: generating fake measurements")
+            self.ui.comms_status.setText("Simulate mode on")
         else:
             print("Not simulating: real operation")
-        
 
         self.s = Moxacomms(self.moxa_ip, self.moxa_port)
         self.s.new_icl_record.connect(self.on_new_icl_record)
@@ -109,7 +109,7 @@ class ICLlogger(QMainWindow):
         # Count the seconds since last good responses from probes
         self.good_response_seconds += 1
         self.last_good_response_timer.start(1000)
-        disp_str=("Last: " + str(self.good_response_seconds))
+        disp_str=("Last Ret: " + str(self.good_response_seconds))
         self.ui.last_good_duration.setText(disp_str)
                 
     def on_start_button(self):
@@ -152,6 +152,7 @@ class ICLlogger(QMainWindow):
         incfg.read("ICLlogger.ini")
 
         self.simulate = incfg.get('ICL','simulate')
+
         self.moxa_ip = incfg.get('ICL','moxa_ip')
         #self.moxa_ip = bytes(self.moxa_ip, 'utf-8')
         self.moxa_port = int(incfg.get('ICL','moxa_port'))
